@@ -1,0 +1,91 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand-950: #221E1F;
+  --color-brand-900: #221E1F;
+  --color-brand-800: #C3A029;
+  --color-brand-700: #C3A029;
+  --color-brand-600: #FDFDFD;
+  --color-brand-500: #FDFDFD;
+  --color-brand-400: #221E1F;
+  --color-brand-300: #221E1F;
+  --color-brand-100: #FDFDFD;
+  --color-brand-50:  #FDFDFD;
+  --font-family-sans: "Inter", system-ui, sans-serif;
+}
+
+:root {
+  color-scheme: light;
+  background-color: var(--color-brand-600);
+}
+
+html {
+  background-color: var(--color-brand-600);
+  color: var(--color-brand-950);
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  background-color: var(--color-brand-600);
+  color: var(--color-brand-950);
+  font-family: var(--font-family-sans);
+}
+
+a,
+p,
+li,
+span,
+label,
+button,
+input,
+textarea,
+select {
+  color: var(--color-brand-950);
+}
+
+a {
+  color: var(--color-brand-950);
+}
+
+::placeholder {
+  color: var(--color-brand-950);
+  opacity: 0.65;
+}
+
+.btn-primary {
+  background-color: var(--color-brand-800);
+  color: var(--color-brand-600);
+}
+
+.btn-primary:hover {
+  background-color: var(--color-brand-600);
+  color: var(--color-brand-950);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.16);
+}
+
+.bg-gradient-brand {
+  background-image: linear-gradient(135deg, var(--color-brand-800) 0%, var(--color-brand-950) 100%);
+}
+
+.bg-brand-800,
+.bg-brand-950,
+.bg-brand-700,
+.bg-brand-900,
+.bg-gradient-brand {
+  color: #ffffff;
+}
+
+.bg-brand-800 *,
+.bg-brand-950 *,
+.bg-brand-700 *,
+.bg-brand-900 *,
+.bg-gradient-brand * {
+  color: inherit !important;
+}
+
+.text-on-brand,
+.text-on-brand-800,
+.text-on-brand-950 {
+  color: #ffffff !important;
+}
