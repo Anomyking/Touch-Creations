@@ -26,6 +26,7 @@
     "tailwind-merge": "^3.6.0"
   },
   "devDependencies": {
+    "@react-email/render": "^2.0.9",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
@@ -36,4 +37,3 @@
     "typescript": "^5"
   }
 }
-

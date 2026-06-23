@@ -11,81 +11,301 @@
   --color-brand-300: #221E1F;
   --color-brand-100: #FDFDFD;
   --color-brand-50:  #FDFDFD;
+
+  /* ── Readable semantic aliases ──────────────────────────────────────────
+     Used in the overrides below so intent is clear.                        */
+  --color-ui-bg:         #FDFDFD;   /* page/card surface  */
+  --color-ui-dark:       #221E1F;   /* near-black         */
+  --color-ui-gold:       #C3A029;   /* gold accent        */
+  --color-ui-gold-dark:  #a8891f;   /* gold hover (–15%)  */
+  --color-border-subtle: #E4E2E0;   /* light grey border  */
+  --color-border-mid:    #CFCCC9;   /* mid grey border    */
+
   --font-family-sans: "Inter", system-ui, sans-serif;
 }
 
-:root {
-  color-scheme: light;
-  background-color: var(--color-brand-600);
-}
+/* ════════════════════════════════════════════════════════════════════════════
+   BASE
+   ════════════════════════════════════════════════════════════════════════════ */
 
-html {
-  background-color: var(--color-brand-600);
-  color: var(--color-brand-950);
-}
+:root { color-scheme: light; }
 
-body {
-  min-height: 100vh;
-  margin: 0;
-  background-color: var(--color-brand-600);
-  color: var(--color-brand-950);
+html, body {
+  background-color: var(--color-ui-bg);
+  color: var(--color-ui-dark);
   font-family: var(--font-family-sans);
 }
+body { min-height: 100vh; margin: 0; }
 
-a,
-p,
-li,
-span,
-label,
-button,
-input,
-textarea,
-select {
-  color: var(--color-brand-950);
-}
-
-a {
-  color: var(--color-brand-950);
+/* Prose elements only — buttons and spans intentionally excluded so
+   Tailwind text-* classes on interactive elements are never silently
+   overridden.                                                               */
+a, p, li, label, input, textarea, select {
+  color: var(--color-ui-dark);
 }
 
 ::placeholder {
-  color: var(--color-brand-950);
-  opacity: 0.65;
+  color: var(--color-ui-dark);
+  opacity: 0.45;
 }
 
-.btn-primary {
-  background-color: var(--color-brand-800);
-  color: var(--color-brand-600);
+/* ════════════════════════════════════════════════════════════════════════════
+   BENTO GRID CARD SYSTEM
+   Cards alternate between gold (bg-brand-700/800) and dark (bg-brand-900/950).
+   Each variant needs its own complete colour palette so text, badges, and
+   the "Shop now →" CTA are always legible regardless of which background the
+   data layer assigns.
+   ════════════════════════════════════════════════════════════════════════════ */
+
+/* ── Gold bento cards (brand-700 = brand-800 = #C3A029) ─────────────────── */
+.bento-card-gold,
+.bento-card-gold.bg-brand-700,
+.bento-card-gold.bg-brand-800,
+[class*="bg-brand-700"].bento-card,
+[class*="bg-brand-800"].bento-card {
+  --bento-text-primary:   #ffffff;
+  --bento-text-secondary: rgba(255,255,255,0.75);
+  --bento-text-cta:       rgba(255,255,255,0.90);
+  --bento-badge-bg:       rgba(0,0,0,0.18);
+  --bento-badge-text:     rgba(255,255,255,0.90);
+  --bento-icon-bg:        rgba(0,0,0,0.18);
+  --bento-featured-bg:    rgba(255,255,255,0.20);
+  --bento-featured-text:  #ffffff;
+  --bento-featured-dot:   rgba(255,255,255,0.80);
 }
 
-.btn-primary:hover {
-  background-color: var(--color-brand-600);
-  color: var(--color-brand-950);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.16);
+/* ── Dark bento cards (brand-900 = brand-950 = #221E1F) ─────────────────── */
+.bento-card-dark,
+.bento-card-dark.bg-brand-900,
+.bento-card-dark.bg-brand-950,
+[class*="bg-brand-900"].bento-card,
+[class*="bg-brand-950"].bento-card {
+  --bento-text-primary:   #ffffff;
+  --bento-text-secondary: rgba(255,255,255,0.65);
+  --bento-text-cta:       rgba(255,255,255,0.80);
+  --bento-badge-bg:       rgba(255,255,255,0.12);
+  --bento-badge-text:     rgba(255,255,255,0.85);
+  --bento-icon-bg:        rgba(255,255,255,0.12);
+  --bento-featured-bg:    rgba(255,255,255,0.15);
+  --bento-featured-text:  #ffffff;
+  --bento-featured-dot:   var(--color-ui-gold);
 }
 
-.bg-gradient-brand {
-  background-image: linear-gradient(135deg, var(--color-brand-800) 0%, var(--color-brand-950) 100%);
-}
-
-.bg-brand-800,
-.bg-brand-950,
+/* Apply the token values to every text node inside a bento card.
+   We use CSS custom properties rather than !important cascades so that
+   any explicitly-coloured element (e.g. a gold badge) is untouched.        */
 .bg-brand-700,
+.bg-brand-800,
 .bg-brand-900,
-.bg-gradient-brand {
+.bg-brand-950 {
+  color: var(--bento-text-primary, #ffffff);
+}
+
+/* ── Targeted selectors for each text role inside bento cards ─────────────
+   Matches the class names used in HeroSection.tsx                           */
+
+/* Title line:  text-brand-300  → #221E1F on dark bg = invisible */
+.bg-brand-900 .text-brand-300,
+.bg-brand-950 .text-brand-300 {
+  color: #ffffff !important;
+}
+/* On gold bg brand-300 is fine (dark on gold = readable), but keep it white
+   to stay visually consistent with the dark cards.                         */
+.bg-brand-700 .text-brand-300,
+.bg-brand-800 .text-brand-300 {
+  color: #ffffff !important;
+}
+
+/* Description line: text-brand-500  → #FDFDFD (near-white) = invisible on
+   gold AND on dark.  Give it a visible off-white tint.                     */
+.bg-brand-700 .text-brand-500,
+.bg-brand-800 .text-brand-500,
+.bg-brand-900 .text-brand-500,
+.bg-brand-950 .text-brand-500 {
+  color: rgba(255,255,255,0.68) !important;
+}
+
+/* CTA arrow "Shop now →":  text-brand-600 → #FDFDFD = invisible everywhere */
+.bg-brand-700 .text-brand-600,
+.bg-brand-800 .text-brand-600,
+.bg-brand-900 .text-brand-600,
+.bg-brand-950 .text-brand-600 {
+  color: rgba(255,255,255,0.82) !important;
+}
+/* Hover target: group-hover:text-brand-400 → #221E1F on dark = ok on gold,
+   but on dark card that's black-on-black.  Keep it white on dark cards.    */
+.bg-brand-900 .group:hover .group-hover\:text-brand-400,
+.bg-brand-950 .group:hover .group-hover\:text-brand-400 {
+  color: #ffffff !important;
+}
+
+/* Top-right badge:  text-brand-400 → #221E1F.  Readable on gold (dark on
+   gold = fine), but near-black on dark card bg = very low contrast.
+   Override to white only on dark cards.                                    */
+.bg-brand-900 .text-brand-400,
+.bg-brand-950 .text-brand-400 {
+  color: rgba(255,255,255,0.85) !important;
+}
+
+/* Badge background: bg-black/20 is used inline so Tailwind handles it —
+   no override needed.                                                       */
+
+/* Featured pill (e.g. "Most ordered", "New"):  bg-brand-600 text-brand-950
+   brand-600 = #FDFDFD, brand-950 = #221E1F → dark pill text on white pill =
+   readable on BOTH card types.  Ensure the pill bg is actually visible.     */
+.bg-brand-700 .bg-brand-600,
+.bg-brand-800 .bg-brand-600,
+.bg-brand-900 .bg-brand-600,
+.bg-brand-950 .bg-brand-600 {
+  background-color: rgba(255,255,255,0.22) !important;
+}
+/* brand-950 text on that semi-white pill is near-black — keep it dark so
+   it reads on the translucent white background.                             */
+.bg-brand-700 .bg-brand-600 .text-brand-950,
+.bg-brand-800 .bg-brand-600 .text-brand-950,
+.bg-brand-900 .bg-brand-600 .text-brand-950,
+.bg-brand-950 .bg-brand-600 .text-brand-950 {
+  color: var(--color-ui-dark) !important;
+}
+/* Pulse dot inside featured pill: bg-brand-300 → #221E1F (dark) — fine */
+
+/* ════════════════════════════════════════════════════════════════════════════
+   BUNDLE CARDS — popular bundle has bg-brand-700 (gold)
+   ════════════════════════════════════════════════════════════════════════════ */
+
+/* text-brand-300 used for bundle item list on popular card → #221E1F on
+   gold = readable, but we still want it white for visual parity.            */
+.bg-brand-700 h3.text-white,
+.bg-brand-700 .text-white {
+  color: #ffffff !important;
+}
+
+/* Bundle item list checkmarks: text-brand-500 = #FDFDFD = invisible on gold */
+/* Already covered by the bento rule above — nothing extra needed.           */
+
+/* "Save X%" badge on popular bundle: bg-brand-600 text-brand-200
+   brand-600 = #FDFDFD, brand-200 = #FDFDFD → white on white.
+   Fix: use semi-transparent white overlay + dark text.                      */
+.bg-brand-700 .text-brand-200 {
+  color: var(--color-ui-dark) !important;
+}
+
+/* "Order this pack" button on popular bundle: bg-white text-brand-700
+   text-brand-700 = #C3A029 on white = readable.  Good as-is.
+   Just ensure hover:bg-brand-100 stays visible (see hover overrides below). */
+
+/* ════════════════════════════════════════════════════════════════════════════
+   PRODUCT CLIENT — dark pricing panel (bg-brand-950)
+   ════════════════════════════════════════════════════════════════════════════ */
+
+/* Total price box uses bg-brand-950 with text-brand-300 (= #221E1F = black)
+   — near-black text on near-black bg = invisible.  Force white.             */
+.bg-brand-950 .text-brand-300 {
+  color: #ffffff !important;
+}
+/* Divider line inside pricing panel: border-brand-800 → gold, fine.         */
+
+/* ════════════════════════════════════════════════════════════════════════════
+   GLOBAL text-brand-* colour REMAPS
+   (where the class appears on light/white backgrounds)
+   ════════════════════════════════════════════════════════════════════════════ */
+
+/* text-brand-600 on white = #FDFDFD = invisible.
+   Used on: inactive category tabs, sort dropdown, filter pill, product desc  */
+.text-brand-600 {
+  color: #6B6763;
+}
+/* text-brand-500 on white = #FDFDFD = invisible.
+   Used on: sub-labels, category tab count badges                             */
+.text-brand-500 {
+  color: #8A8480;
+}
+
+/* Reinstate readable white when these appear inside dark/gold containers
+   (the container rules above already do this with !important, but keep
+   these as a readable fallback for future contexts).                         */
+
+/* ════════════════════════════════════════════════════════════════════════════
+   BUTTON / HOVER OVERRIDES
+   ════════════════════════════════════════════════════════════════════════════ */
+
+/* btn-primary utility */
+.btn-primary {
+  background-color: var(--color-ui-gold);
   color: #ffffff;
 }
-
-.bg-brand-800 *,
-.bg-brand-950 *,
-.bg-brand-700 *,
-.bg-brand-900 *,
-.bg-gradient-brand * {
-  color: inherit !important;
+.btn-primary:hover {
+  background-color: var(--color-ui-gold-dark);
+  color: #ffffff;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.16);
 }
 
-.text-on-brand,
-.text-on-brand-800,
-.text-on-brand-950 {
-  color: #ffffff !important;
+/* hover:bg-brand-600 → #FDFDFD = button disappears on hover.
+   Override to a darkened gold so gold buttons deepen on hover.              */
+.hover\:bg-brand-600:hover {
+  background-color: var(--color-ui-gold-dark) !important;
+}
+/* hover:bg-brand-700 used on non-active states — keep gold */
+.hover\:bg-brand-700:hover {
+  background-color: var(--color-ui-gold) !important;
+}
+/* hover:bg-brand-100 used on the white "Order this pack" button inside a
+   gold card — should stay near-white, not disappear.                        */
+.hover\:bg-brand-100:hover {
+  background-color: rgba(255,255,255,0.88) !important;
+}
+/* Ensure text stays dark on that white hover within gold card               */
+.bg-brand-700 .hover\:bg-brand-100:hover,
+.bg-brand-800 .hover\:bg-brand-100:hover {
+  color: var(--color-ui-dark) !important;
+}
+
+/* Arrow CTA circle in ProductCard: bg-brand-700 → gold, text-white.
+   hover:bg-brand-600 would turn it white — already fixed above.             */
+
+/* ════════════════════════════════════════════════════════════════════════════
+   BORDER OVERRIDES
+   ════════════════════════════════════════════════════════════════════════════ */
+
+/* border-brand-50 / border-brand-100 → #FDFDFD = invisible on white        */
+.border-brand-50  { border-color: var(--color-border-subtle) !important; }
+.border-brand-100 { border-color: var(--color-border-subtle) !important; }
+
+/* Inside gold cards: re-allow the card's own border to be a visible
+   translucent shade rather than the grey override.                          */
+.bg-brand-700.border-brand-100,
+.bg-brand-800.border-brand-100 {
+  border-color: rgba(255,255,255,0.25) !important;
+}
+
+/* hover:border-brand-300 → #221E1F (near-black) — soften to mid-grey       */
+.hover\:border-brand-300:hover { border-color: var(--color-border-mid) !important; }
+
+/* border-brand-300 on white button inside gold card — keep white tint       */
+.bg-brand-700 .border-brand-300,
+.bg-brand-800 .border-brand-300 {
+  border-color: rgba(255,255,255,0.45) !important;
+}
+
+/* border-brand-500 on the "Get a quote" outline button in the gold CTA strip */
+.border-brand-500 { border-color: rgba(255,255,255,0.55) !important; }
+
+/* Divide utilities */
+.divide-brand-50  > * + * { border-color: var(--color-border-subtle) !important; }
+.divide-brand-100 > * + * { border-color: var(--color-border-subtle) !important; }
+
+/* ════════════════════════════════════════════════════════════════════════════
+   BACKGROUND SURFACE OVERRIDES
+   ════════════════════════════════════════════════════════════════════════════ */
+
+/* bg-brand-50 used for card surfaces — push to a very faint warm grey so it
+   reads as a distinct surface against the pure white page background.       */
+.bg-brand-50 { background-color: #F5F3F0 !important; }
+
+/* ════════════════════════════════════════════════════════════════════════════
+   GRADIENT SECTION
+   ════════════════════════════════════════════════════════════════════════════ */
+.bg-gradient-brand {
+  background-image: linear-gradient(135deg, var(--color-ui-gold) 0%, var(--color-ui-dark) 100%);
+  color: #ffffff;
 }

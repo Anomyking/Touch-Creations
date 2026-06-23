@@ -41,8 +41,8 @@ export default function Footer() {
             <p className="text-brand-400 text-sm mt-1">Same-day printing · Free delivery on orders over KES 7,000</p>
           </div>
           <div className="flex gap-3 shrink-0">
-            <Link href="/#products" className="bg-white text-brand-700 font-medium text-sm px-5 py-2.5 rounded-full hover:bg-brand-300 transition-colors">
-              Browse products
+            <Link href="/#products" className="group bg-white text-brand-700 font-medium text-sm px-5 py-2.5 rounded-full hover:bg-brand-300 hover:text-white transition-colors">
+              <span className="transition-colors group-hover:text-white">Browse products</span>
             </Link>
             <Link href="/quote" className="border border-brand-500 text-brand-300 text-sm px-5 py-2.5 rounded-full hover:bg-brand-800 transition-colors">
               Get a quote
