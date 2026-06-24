@@ -1,20 +1,56 @@
+"use client";
+
 import Link from "next/link";
 import { bundles } from "@/data";
 import { formatPrice, discountPercent } from "@/lib/utils";
+import { motion } from "framer-motion";
+
+const containerVariants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.1 } },
+};
+
+const cardVariants = {
+  hidden:  { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } },
+};
+
+const fadeUp = {
+  hidden:  { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } },
+};
 
 export default function BundlesSection() {
   return (
     <section id="bundles" className="bg-brand-50 py-16 md:py-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <p className="text-xs font-medium tracking-widest uppercase text-brand-500 mb-3">Starter bundles</p>
-          <h2 className="text-2xl sm:text-3xl font-medium text-brand-950">Everything you need to launch</h2>
-          <p className="text-sm text-brand-500 mt-3">Curated print packs — better value than ordering separately</p>
-        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+        <motion.div
+          className="text-center mb-12"
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-60px" }}
+        >
+          <motion.p variants={fadeUp} className="text-xs font-medium tracking-widest uppercase text-brand-500 mb-3">Starter bundles</motion.p>
+          <motion.h2 variants={fadeUp} className="text-2xl sm:text-3xl font-medium text-brand-950">Everything you need to launch</motion.h2>
+          <motion.p variants={fadeUp} className="text-sm text-brand-500 mt-3">Curated print packs — better value than ordering separately</motion.p>
+        </motion.div>
+
+        <motion.div
+          className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4"
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-60px" }}
+        >
           {bundles.slice(0, 3).map((bundle) => (
-            <div key={bundle.id} className={`relative flex flex-col rounded-2xl p-6 ${bundle.isPopular ? "bg-brand-700 border-2 border-brand-600" : "bg-white border border-brand-100"}`}>
+            <motion.div
+              key={bundle.id}
+              variants={cardVariants}
+              whileHover={{ y: -6, transition: { duration: 0.25, ease: "easeOut" } }}
+              className={`relative flex flex-col rounded-2xl p-6 ${bundle.isPopular ? "bg-brand-700 border-2 border-brand-600" : "bg-white border border-brand-100"}`}
+            >
               {bundle.isPopular && (
                 <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-brand-500 text-white text-xs font-medium px-4 py-1 rounded-full">Most popular</span>
               )}
@@ -37,16 +73,29 @@ export default function BundlesSection() {
                   Save {discountPercent(bundle.originalPriceKES, bundle.priceKES)}%
                 </span>
               </div>
-              <Link href={`/bundles/${bundle.id}`} className={`w-full text-center text-sm font-medium py-2.5 rounded-full transition-colors ${bundle.isPopular ? "bg-white text-brand-700 hover:bg-brand-100" : "bg-brand-700 text-white hover:bg-brand-600"}`}>
-                Order this pack
-              </Link>
-            </div>
+              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}>
+                <Link href={`/bundles/${bundle.id}`} className={`w-full text-center text-sm font-medium py-2.5 rounded-full transition-colors block ${bundle.isPopular ? "bg-white text-brand-700 hover:bg-brand-100" : "bg-brand-700 text-white hover:bg-brand-600"}`}>
+                  Order this pack
+                </Link>
+              </motion.div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <motion.div
+          className="grid grid-cols-1 md:grid-cols-2 gap-4"
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-40px" }}
+        >
           {bundles.slice(3).map((bundle) => (
-            <div key={bundle.id} className="flex flex-col bg-white border border-brand-100 rounded-2xl p-6">
+            <motion.div
+              key={bundle.id}
+              variants={cardVariants}
+              whileHover={{ y: -4, transition: { duration: 0.25 } }}
+              className="flex flex-col bg-white border border-brand-100 rounded-2xl p-6"
+            >
               <div className="flex items-start gap-4 mb-4">
                 <div className="w-10 h-10 rounded-xl bg-brand-50 flex items-center justify-center text-xl">
                   {bundle.id === "team" ? "👕" : "📦"}
@@ -68,20 +117,27 @@ export default function BundlesSection() {
                   <span className="text-lg font-medium text-brand-900">{formatPrice(bundle.priceKES)}</span>
                   <span className="text-xs line-through text-brand-300">{formatPrice(bundle.originalPriceKES)}</span>
                 </div>
-                <Link href={`/bundles/${bundle.id}`} className="text-sm font-medium bg-brand-700 text-white hover:bg-brand-600 px-5 py-2 rounded-full transition-colors">
-                  Order this pack
-                </Link>
+                <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}>
+                  <Link href={`/bundles/${bundle.id}`} className="text-sm font-medium bg-brand-700 text-white hover:bg-brand-600 px-5 py-2 rounded-full transition-colors">
+                    Order this pack
+                  </Link>
+                </motion.div>
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
 
-        <p className="text-center text-xs text-brand-400 mt-6">
+        <motion.p
+          className="text-center text-xs text-brand-400 mt-6"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.4, duration: 0.4 }}
+        >
           All bundles include free delivery within Nairobi ·{" "}
           <Link href="/quote" className="text-brand-600 hover:text-brand-800 underline underline-offset-2">Custom quantities? Get a tailored quote →</Link>
-        </p>
+        </motion.p>
       </div>
     </section>
   );
 }
-

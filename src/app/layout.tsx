@@ -9,8 +9,7 @@ import StructuredData  from "@/components/ui/StructuredData";
 import { AuthProvider } from "@/context/AuthContext";
 import { CartProvider } from "@/context/CartContext";
 
-// Resolves to production URL on Vercel, localhost during dev
-const BASE_URL = process.env.NEXT_PUBLIC_APP_URL ?? "https://Touch creations.co.ke";
+const BASE_URL = process.env.NEXT_PUBLIC_APP_URL ?? "https://touchcreations.co.ke";
 
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
@@ -72,7 +71,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <CartProvider>
             <Navbar />
             <CartDrawer />
-            <main>{children}</main>
+            {/*
+              main sits above the footer (z-10 vs footer's z-0).
+              As the user scrolls, main slides UP revealing the sticky
+              footer beneath it. Scrolling back up, main covers the
+              footer again — natural curtain-reveal behaviour.
+            */}
+            <main className="relative z-10 bg-white">
+              {children}
+            </main>
             <Footer />
             <WhatsAppButton />
           </CartProvider>
@@ -81,4 +88,3 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     </html>
   );
 }
-
