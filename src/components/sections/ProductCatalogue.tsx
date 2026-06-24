@@ -24,7 +24,7 @@ function ProductCard({ product, index }: { product: Product; index: number }) {
       transition={{
         delay: index * 0.07,
         duration: 0.52,
-        ease: [0.22, 1, 0.36, 1],
+        ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
       }}
       whileHover={{
         y: -8,
@@ -40,7 +40,7 @@ function ProductCard({ product, index }: { product: Product; index: number }) {
           <motion.div
             className="h-full w-full"
             whileHover={{ scale: 1.08 }}
-            transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
           >
             <ProductImage productId={product.id} productName={product.name} size="card" />
           </motion.div>
@@ -132,7 +132,7 @@ export default function ProductCatalogue() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: false, margin: "-60px" }}
-          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
         >
           <div>
             <p className="text-xs font-medium tracking-widest uppercase text-black mb-2">Product catalogue</p>

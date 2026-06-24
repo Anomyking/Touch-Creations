@@ -31,7 +31,7 @@ function NavLink({ label, href }: { label: string; href: string }) {
         className="absolute bottom-0.5 left-3 right-3 h-[2px] rounded-full bg-brand-700 origin-left"
         initial={{ scaleX: 0, opacity: 0 }}
         animate={{ scaleX: hovered ? 1 : 0, opacity: hovered ? 1 : 0 }}
-        transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
       />
     </Link>
   );

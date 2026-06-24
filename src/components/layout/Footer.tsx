@@ -57,9 +57,11 @@ function ParallaxFooter({ children }: { children: React.ReactNode }) {
   );
 }
 
+const _ease = [0.22, 1, 0.36, 1] as [number, number, number, number];
+
 const fadeUp = {
   hidden:  { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: _ease } },
 };
 
 const containerVariants = {
@@ -77,7 +79,7 @@ export default function Footer() {
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: false }}
-            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
           >
             <p className="text-white font-medium">Ready to print? Let&apos;s get started.</p>
             <p className="text-brand-400 text-sm mt-1">Same-day printing · Free delivery on orders over KES 7,000</p>
@@ -87,7 +89,7 @@ export default function Footer() {
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: false }}
-            transition={{ duration: 0.5, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.5, delay: 0.1, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
           >
             <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}>
               <Link href="/#products" className="bg-white text-brand-700 font-medium text-sm px-5 py-2.5 rounded-full hover:bg-brand-300 hover:text-white transition-colors block">

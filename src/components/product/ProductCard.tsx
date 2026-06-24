@@ -19,7 +19,7 @@ export default function ProductCard({ product }: { product: Product }) {
           <motion.div
             className="h-full w-full"
             whileHover={{ scale: 1.06 }}
-            transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
           >
             <ProductImage productId={product.id} productName={product.name} size="card" />
           </motion.div>

@@ -79,7 +79,7 @@ export default function CartDrawer() {
                     initial={{ opacity: 0, x: 24 }}
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: -24, height: 0, marginBottom: 0 }}
-                    transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+                    transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
                     className="flex gap-4 pb-4 border-b border-brand-50 last:border-0"
                   >
                     <div className="w-16 h-16 rounded-xl bg-brand-50 overflow-hidden shrink-0">

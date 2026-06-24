@@ -17,7 +17,7 @@ function Counter({ to, suffix = "" }: { to: number; suffix?: string }) {
   useEffect(() => {
     if (inView) {
       mv.set(0);
-      const ctrl = animate(mv, to, { duration: 1.6, ease: [0.22, 1, 0.36, 1] });
+      const ctrl = animate(mv, to, { duration: 1.6, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] });
       return ctrl.stop;
     }
   }, [inView, mv, to]);
@@ -45,7 +45,7 @@ function RevealText({ text, className = "" }: { text: string; className?: string
           key={i}
           initial={{ opacity: 0, y: 14, filter: "blur(4px)" }}
           animate={inView ? { opacity: 1, y: 0, filter: "blur(0px)" } : { opacity: 0, y: 14, filter: "blur(4px)" }}
-          transition={{ delay: i * (isLong ? 0.07 : 0.035), duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ delay: i * (isLong ? 0.07 : 0.035), duration: 0.38, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
           className="inline-block"
         >
           {unit}
@@ -92,12 +92,12 @@ const containerVariants = {
 
 const cardVariants = {
   hidden:  { opacity: 0, y: 30, scale: 0.95 },
-  visible: { opacity: 1, y: 0,  scale: 1, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } },
+  visible: { opacity: 1, y: 0,  scale: 1, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] } },
 };
 
 const fadeUp = {
   hidden:  { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] } },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] } },
 };
 
 /* ── Bento Card — 360° spin on mouse leave ───────────────────────────── */
@@ -230,7 +230,7 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: false, margin: "-40px" }}
-          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
         >
           <QuoteBento />
         </motion.div>
