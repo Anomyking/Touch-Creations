@@ -1,10 +1,34 @@
 import { NextRequest, NextResponse } from "next/server";
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD ?? "Touch creations-admin";
+import {
+  checkAdminPassword,
+  createSessionToken,
+  setAdminCookie,
+  isRateLimited,
+  getClientIp,
+} from "@/lib/admin-auth";
+
+// 10 attempts per 15 minutes per IP
+const LIMIT = 10;
+const WINDOW_MS = 15 * 60 * 1000;
+
 export async function POST(req: NextRequest) {
+  const ip = getClientIp(req);
+
+  if (isRateLimited(ip, LIMIT, WINDOW_MS)) {
+    return NextResponse.json(
+      { error: "Too many attempts. Try again in 15 minutes." },
+      { status: 429 }
+    );
+  }
+
   const { password } = await req.json();
-  if (password !== ADMIN_PASSWORD) return NextResponse.json({ error: "Incorrect" }, { status: 401 });
+
+  if (!checkAdminPassword(password ?? "")) {
+    return NextResponse.json({ error: "Incorrect" }, { status: 401 });
+  }
+
+  const token = createSessionToken();
   const res = NextResponse.json({ success: true });
-  res.cookies.set("admin_auth", ADMIN_PASSWORD, { httpOnly: true, secure: process.env.NODE_ENV === "production", maxAge: 60*60*24*7, path: "/" });
+  setAdminCookie(res, token);
   return res;
 }
-

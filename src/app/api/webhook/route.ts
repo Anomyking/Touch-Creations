@@ -1,15 +1,26 @@
 import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
 import { sendOrderConfirmation } from "@/lib/email";
-import { confirmOrderPayment, getOrderByReference, updateOrderStatus } from "@/lib/db";
+import { confirmOrderPayment, updateOrderStatus } from "@/lib/db";
 import { sendDeliveryUpdate } from "@/lib/email";
+import { requireAdminAuth } from "@/lib/admin-auth";
 
-const WEBHOOK_SECRET = process.env.INTASEND_WEBHOOK_SECRET ?? "";
+const WEBHOOK_SECRET = process.env.INTASEND_WEBHOOK_SECRET;
+
+if (!WEBHOOK_SECRET) {
+  throw new Error(
+    "INTASEND_WEBHOOK_SECRET env var is not set. Add it to .env.local before starting the server."
+  );
+}
 
 function verifySignature(payload: string, signature: string): boolean {
-  if (!WEBHOOK_SECRET) return true;
-  const expected = crypto.createHmac("sha256", WEBHOOK_SECRET).update(payload).digest("hex");
-  return crypto.timingSafeEqual(Buffer.from(expected), Buffer.from(signature));
+  // Secret is guaranteed to be set by the startup guard above.
+  const expected = crypto.createHmac("sha256", WEBHOOK_SECRET!).update(payload).digest("hex");
+  try {
+    return crypto.timingSafeEqual(Buffer.from(expected), Buffer.from(signature));
+  } catch {
+    return false; // buffers differ in length (malformed signature)
+  }
 }
 
 export async function POST(req: NextRequest) {
@@ -65,8 +76,11 @@ export async function POST(req: NextRequest) {
 }
 
 // ─── Admin can also trigger status updates via this endpoint ──────────────────
-// POST /api/webhook/status { reference, status, tracking_code? }
+// PATCH /api/webhook { reference, status, tracking_code? }
 export async function PATCH(req: NextRequest) {
+  const unauth = await requireAdminAuth(req);
+  if (unauth) return unauth;
+
   try {
     const { reference, status, tracking_code } = await req.json();
     if (!reference || !status) {
@@ -93,4 +107,3 @@ export async function PATCH(req: NextRequest) {
     return NextResponse.json({ message: "Update failed" }, { status: 500 });
   }
 }
-

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createOrder } from "@/lib/db";
+import { isRateLimited, getClientIp } from "@/lib/admin-auth";
 
 const INTASEND_API_URL = process.env.INTASEND_TEST_MODE === "true"
   ? "https://sandbox.intasend.com/api/v1"
@@ -13,6 +14,11 @@ function generateRef(): string {
 }
 
 export async function POST(req: NextRequest) {
+  // 20 checkout attempts per hour per IP
+  if (isRateLimited(getClientIp(req), 20, 60 * 60 * 1000)) {
+    return NextResponse.json({ message: "Too many requests. Please try again later." }, { status: 429 });
+  }
+
   try {
     const body = await req.json();
     const { customer, items, total, subtotal, deliveryFee, paymentMethod, mpesaPhone, deliveryMethod } = body;
@@ -102,4 +108,3 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ message: "Server error. Please try again." }, { status: 500 });
   }
 }
-
