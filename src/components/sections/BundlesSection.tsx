@@ -52,7 +52,7 @@ export default function BundlesSection() {
               className={`relative flex flex-col rounded-2xl p-6 ${bundle.isPopular ? "bg-brand-700 border-2 border-brand-600" : "bg-white border border-brand-100"}`}
             >
               {bundle.isPopular && (
-                <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-brand-500 text-white text-xs font-medium px-4 py-1 rounded-full">Most popular</span>
+                <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-brand-950 text-white text-xs font-medium px-4 py-1 rounded-full shadow-sm ring-1 ring-white/10">Most popular</span>
               )}
               <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-xl mb-4 ${bundle.isPopular ? "bg-brand-600" : "bg-brand-50"}`}>
                 {bundle.id === "hustler" ? "🌱" : bundle.id === "launch" ? "🚀" : "🏢"}

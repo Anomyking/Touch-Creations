@@ -154,33 +154,33 @@ export default function QuoteBento() {
     <>
       <div className="mb-4">
         {/* The bento card itself */}
-        <div className="bg-gradient-to-br from-brand-900/70 to-brand-950 border border-brand-800 rounded-2xl overflow-hidden shadow-[inset_0_1px_0_rgba(199,125,255,0.08)]">
+        <div className="bg-gradient-to-br from-brand-900/40 to-brand-950/30 border border-brand-700 rounded-2xl overflow-hidden shadow-lg">
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-0">
 
             {/* Left: explainer */}
-            <div className="lg:col-span-2 p-6 lg:p-8 border-b lg:border-b-0 lg:border-r border-brand-800">
-              <span className="inline-flex items-center gap-1.5 bg-brand-700 text-white text-[10px] font-medium rounded-full px-2.5 py-1 mb-4">
-                <span className="w-1.5 h-1.5 rounded-full bg-brand-300 inline-block" />
+            <div className="lg:col-span-2 p-6 lg:p-8 border-b lg:border-b-0 lg:border-r border-brand-700 flex flex-col justify-center">
+              <span className="inline-flex items-center gap-2 bg-white/8 text-white text-[11px] font-semibold rounded-full px-3 py-1 mb-4 ring-1 ring-white/6">
+                <span className="w-2 h-2 rounded-full bg-amber-400 inline-block" />
                 Custom orders
               </span>
-              <h3 className="text-xl font-medium text-white mb-3 leading-tight">
+              <h3 className="text-2xl font-semibold text-white mb-3 leading-snug">
                 Need something special?
               </h3>
-              <p className="text-xs text-white/80 leading-relaxed mb-4">
-                Describe your idea — quantity, finish, deadline, anything. We&apos;ll send a detailed
-                quote within an hour. Save multiple drafts before sending.
+              <p className="text-sm text-white/75 leading-relaxed mb-4 max-w-md">
+                Describe your idea — quantity, finish, deadline, anything. We&apos;ll send a clear
+                quote fast. Save drafts and come back anytime.
               </p>
-              <div className="space-y-1.5 text-[11px] text-white/70">
-                <p className="flex items-center gap-2">
-                  <span className="w-1 h-1 rounded-full bg-brand-400" />
+              <div className="space-y-2 text-sm text-white/70">
+                <p className="flex items-center gap-3">
+                  <span className="w-2 h-2 rounded-full bg-amber-400" />
                   Type freely — we highlight key details
                 </p>
-                <p className="flex items-center gap-2">
-                  <span className="w-1 h-1 rounded-full bg-brand-400" />
+                <p className="flex items-center gap-3">
+                  <span className="w-2 h-2 rounded-full bg-amber-400" />
                   Edit or delete any draft anytime
                 </p>
-                <p className="flex items-center gap-2">
-                  <span className="w-1 h-1 rounded-full bg-brand-400" />
+                <p className="flex items-center gap-3">
+                  <span className="w-2 h-2 rounded-full bg-amber-400" />
                   Drafts saved on your device
                 </p>
               </div>
@@ -193,24 +193,24 @@ export default function QuoteBento() {
                 /* Trigger field */
                 <button
                   onClick={() => openEditor()}
-                  className="w-full text-left bg-brand-950/70 hover:bg-brand-950 border border-brand-800 hover:border-brand-700 rounded-xl px-5 py-4 transition-all group"
+                  className="w-full text-left bg-white/5 hover:bg-white/10 border border-transparent hover:border-white/6 rounded-2xl px-5 py-4 transition-all group"
                 >
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-white/80 group-hover:text-white">
-                      ✍️  Click to describe your custom order…
+                    <span className="text-sm text-white/85 group-hover:text-white">
+                      ✍️  Describe your custom order — quick & easy
                     </span>
-                    <span className="text-xs text-white/70 group-hover:text-white">→</span>
+                    <span className="text-xs text-white/60 group-hover:text-white">Start →</span>
                   </div>
                 </button>
               ) : (
                 /* Expanded glossy editor */
-                <div className="bg-gradient-to-br from-brand-950 to-brand-900 border border-brand-700 rounded-xl shadow-[0_4px_30px_rgba(123,44,191,0.15),inset_0_1px_0_rgba(224,170,255,0.1)] overflow-hidden">
+                <div className="bg-gradient-to-br from-black/30 to-black/10 border border-brand-700 rounded-xl shadow-md overflow-hidden">
                   {/* Top label */}
                   <div className="flex items-center justify-between px-4 py-2.5 border-b border-brand-800 bg-brand-950/50">
-                    <p className="text-[10px] font-medium tracking-widest uppercase text-white/70">
+                    <p className="text-[10px] font-medium tracking-widest uppercase text-white">
                       {editingId ? "✏️ Editing draft" : "✨ New custom order"}
                     </p>
-                    <button onClick={handleCancel} className="text-xs text-white/70 hover:text-white">
+                    <button onClick={handleCancel} className="text-xs text-white hover:text-white">
                       ✕
                     </button>
                   </div>
@@ -221,8 +221,8 @@ export default function QuoteBento() {
                   <div className="relative h-44">
                     <div
                       ref={overlayRef}
-                      aria-hidden="true"
-                      className="qb-layer absolute inset-0 overflow-auto pointer-events-none text-transparent"
+                        aria-hidden="true"
+                        className="qb-layer absolute inset-0 overflow-auto pointer-events-none text-transparent"
                       dangerouslySetInnerHTML={{ __html: highlightContent(text) + "<br/>" }}
                     />
                     <textarea
@@ -232,29 +232,29 @@ export default function QuoteBento() {
                       onScroll={handleScroll}
                       spellCheck={false}
                       placeholder="e.g. I need 500 matte business cards, double-sided, full colour, urgent — delivery by Friday to Westlands..."
-                      className="qb-layer absolute inset-0 w-full h-full bg-transparent text-brand-200 placeholder:text-brand-700 outline-none resize-none caret-brand-300 selection:bg-brand-600 selection:text-white"
+                      className="qb-layer absolute inset-0 w-full h-full bg-transparent text-white placeholder:text-white/60 outline-none resize-none caret-amber-300 selection:bg-amber-600/40 selection:text-white"
                     />
                   </div>
 
                   {/* Footer with legend + actions */}
                   <div className="flex items-center justify-between px-4 py-3 border-t border-brand-800 bg-brand-950/50">
-                    <div className="flex items-center gap-3 text-[10px]">
-                      <span className="flex items-center gap-1 text-brand-500">
+                    <div className="flex items-center gap-3 text-[10px] text-white">
+                      <span className="flex items-center gap-1 text-white">
                         <span className="w-2 h-2 rounded bg-red-500/30 border border-red-500/50" /> Urgent
                       </span>
-                      <span className="flex items-center gap-1 text-brand-500">
+                      <span className="flex items-center gap-1 text-white">
                         <span className="w-2 h-2 rounded bg-brand-600/40 border border-brand-500/50" /> Product
                       </span>
-                      <span className="flex items-center gap-1 text-brand-500">
+                      <span className="flex items-center gap-1 text-white">
                         <span className="w-2 h-2 rounded bg-emerald-500/30 border border-emerald-500/50" /> Finish
                       </span>
-                      <span className="flex items-center gap-1 text-brand-500">
+                      <span className="flex items-center gap-1 text-white">
                         <span className="w-2 h-2 rounded bg-amber-500/30 border border-amber-500/50" /> Quantity
                       </span>
                     </div>
                     <div className="flex gap-2">
                       <button onClick={handleCancel}
-                        className="text-xs text-brand-500 hover:text-brand-400 px-3 py-1.5 transition-colors">
+                        className="text-xs text-white hover:text-white/90 px-3 py-1.5 transition-colors">
                         Cancel
                       </button>
                       <button onClick={handleSubmit} disabled={!text.trim()}
@@ -323,12 +323,11 @@ export default function QuoteBento() {
         </div>
 
         <style jsx global>{`
-          /* Both editor layers (overlay div + textarea) MUST share the EXACT same
-             font geometry so highlights line up perfectly under the cursor. */
+          /* Editor layers share geometry so highlights line up. Use site sans for readability. */
           .qb-layer {
-            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-            font-size: 13px;
-            line-height: 1.55;
+            font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue";
+            font-size: 14px;
+            line-height: 1.6;
             letter-spacing: 0;
             padding: 12px 16px;
             white-space: pre-wrap;
@@ -348,10 +347,10 @@ export default function QuoteBento() {
             box-decoration-break: clone;
             -webkit-box-decoration-break: clone;
           }
-          .kw-urgent   { background: rgba(239, 68, 68, 0.30); }
-          .kw-product  { background: rgba(123, 44, 191, 0.40); }
-          .kw-finish   { background: rgba(16, 185, 129, 0.30); }
-          .kw-quantity { background: rgba(245, 158, 11, 0.30); }
+          .kw-urgent   { background: rgba(239, 68, 68, 0.22); }
+          .kw-product  { background: rgba(123, 44, 191, 0.22); }
+          .kw-finish   { background: rgba(16, 185, 129, 0.18); }
+          .kw-quantity { background: rgba(245, 158, 11, 0.18); }
           .modal-view mark.kw-urgent   { color: #FCA5A5 !important; }
           .modal-view mark.kw-product  { color: #E0AAFF !important; }
           .modal-view mark.kw-finish   { color: #86EFAC !important; }

@@ -48,7 +48,7 @@ export default function TurnaroundPage() {
       {/* Hero */}
       <div className="bg-brand-950 py-14">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <nav className="flex items-center gap-2 text-xs text-brand-600 mb-6">
+          <nav className="flex items-center gap-2 text-xs text-white/70 mb-6">
             <Link href="/" className="hover:text-brand-400">Home</Link>
             <span>›</span>
             <span className="text-brand-400">Turnaround times</span>

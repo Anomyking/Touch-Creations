@@ -92,12 +92,12 @@ export default function Footer() {
             transition={{ duration: 0.5, delay: 0.1, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
           >
             <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}>
-              <Link href="/#products" className="bg-white text-brand-700 font-medium text-sm px-5 py-2.5 rounded-full hover:bg-brand-300 hover:text-white transition-colors block">
+              <Link href="/#products" className="bg-white text-brand-700 font-medium text-sm px-5 py-2.5 rounded-full hover:bg-brand-600 hover:text-white transition-colors block">
                 Browse products
               </Link>
             </motion.div>
             <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}>
-              <Link href="/quote" className="border border-brand-500 text-brand-300 text-sm px-5 py-2.5 rounded-full hover:bg-brand-800 transition-colors block">
+              <Link href="/quote" className="border border-brand-500 bg-brand-800 text-white text-sm px-5 py-2.5 rounded-full hover:bg-brand-900 transition-colors block">
                 Get a quote
               </Link>
             </motion.div>

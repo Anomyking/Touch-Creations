@@ -46,7 +46,7 @@ export default async function ShopIndexPage({
       <div className="bg-white min-h-screen">
         <div className="bg-brand-950 py-12">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <nav className="flex items-center gap-2 text-xs text-brand-600 mb-6">
+            <nav className="flex items-center gap-2 text-xs text-white/70 mb-6">
               <Link href="/" className="hover:text-brand-400">Home</Link>
               <span>›</span>
               <Link href="/shop" className="hover:text-brand-400">All products</Link>
@@ -96,7 +96,7 @@ export default async function ShopIndexPage({
     <div className="bg-white min-h-screen">
       <div className="bg-brand-950 py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <nav className="flex items-center gap-2 text-xs text-brand-600 mb-6">
+          <nav className="flex items-center gap-2 text-xs text-white/70 mb-6">
             <Link href="/" className="hover:text-brand-400">Home</Link>
             <span>›</span>
             <span className="text-brand-400">All products</span>

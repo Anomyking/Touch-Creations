@@ -291,10 +291,10 @@ export default function HeroSection() {
       </div>
 
       {/* Trust bar */}
-      <div className="border-t border-brand-900">
+      <div className="bg-brand-50 py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
-            className="grid grid-cols-2 lg:grid-cols-4 divide-x divide-brand-900"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"
             variants={containerVariants}
             initial="hidden"
             whileInView="visible"
@@ -303,14 +303,14 @@ export default function HeroSection() {
             {trust.map((t) => (
               <motion.div
                 key={t.title}
-                className="flex items-center gap-3 px-4 py-5"
+                className="flex items-start gap-4 p-5 rounded-3xl bg-white border border-brand-100 shadow-sm"
                 variants={fadeUp}
-                whileHover={{ backgroundColor: "rgba(195,160,41,0.06)" }}
+                whileHover={{ y: -3 }}
               >
-                <span className="text-xl">{t.icon}</span>
+                <span className="text-2xl shrink-0">{t.icon}</span>
                 <div>
-                  <p className="text-xs font-medium text-black">{t.title}</p>
-                  <p className="text-[11px] text-black mt-0.5">{t.sub}</p>
+                  <p className="text-sm font-semibold text-brand-950">{t.title}</p>
+                  <p className="text-xs text-brand-600 mt-1">{t.sub}</p>
                 </div>
               </motion.div>
             ))}

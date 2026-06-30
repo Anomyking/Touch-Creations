@@ -40,7 +40,7 @@ export default async function BundlePage({
       {/* Hero */}
       <div className="bg-brand-950 py-12">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
-          <nav className="flex items-center gap-2 text-xs text-brand-600 mb-6">
+          <nav className="flex items-center gap-2 text-xs text-white/70 mb-6">
             <Link href="/" className="hover:text-brand-400">Home</Link>
             <span>›</span>
             <Link href="/#bundles" className="hover:text-brand-400">Bundles</Link>
