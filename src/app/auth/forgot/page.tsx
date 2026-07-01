@@ -8,7 +8,10 @@ export default function ForgotPage() {
   const [loading, setLoading] = useState(false);
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault(); setLoading(true);
-    await createBrowser().auth.resetPasswordForEmail(email, { redirectTo: `${window.location.origin}/auth/callback` });
+    const redirectTo = process.env.NEXT_PUBLIC_APP_URL
+      ? `${process.env.NEXT_PUBLIC_APP_URL}/auth/callback`
+      : `${window.location.origin}/auth/callback`;
+    await createBrowser().auth.resetPasswordForEmail(email, { redirectTo });
     setSent(true); setLoading(false);
   };
   return (
