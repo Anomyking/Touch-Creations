@@ -360,7 +360,7 @@ export default function QuoteBento() {
 
       {/* View modal */}
       {viewing && (
-        <div className="modal-view fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4" onClick={() => setViewing(null)}>
+        <div className="modal-view fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 cursor-pointer" onClick={() => setViewing(null)}>
           <div onClick={(e) => e.stopPropagation()}
             className="bg-gradient-to-br from-brand-900 to-brand-950 border border-brand-700 rounded-2xl max-w-lg w-full p-6 shadow-2xl">
             <div className="flex items-start justify-between mb-4 pb-4 border-b border-brand-800">
@@ -391,4 +391,3 @@ export default function QuoteBento() {
     </>
   );
 }
-

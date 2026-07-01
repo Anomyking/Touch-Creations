@@ -39,14 +39,25 @@ body { min-height: 100vh; margin: 0; }
 
 /* Prose elements only — buttons and spans intentionally excluded so
    Tailwind text-* classes on interactive elements are never silently
-   overridden.                                                               */
-a, p, li, label, input, textarea, select {
-  color: var(--color-ui-dark);
-}
+   overridden.
 
-::placeholder {
-  color: var(--color-ui-dark);
-  opacity: 0.45;
+   IMPORTANT: this must live in @layer base. Tailwind utility classes
+   (text-red-400, text-brand-500, etc.) are generated inside @layer
+   utilities. Un-layered CSS always beats layered CSS regardless of
+   specificity — so without @layer base here, this rule was silently
+   overriding every text-color utility applied directly to a <p>,
+   <label>, <li>, etc., which is what caused text to turn invisible
+   on dark backgrounds (e.g. the login error message, the bundle
+   order-panel checklist).                                                  */
+@layer base {
+  a, p, li, label, input, textarea, select {
+    color: var(--color-ui-dark);
+  }
+
+  ::placeholder {
+    color: var(--color-ui-dark);
+    opacity: 0.45;
+  }
 }
 
 /* ════════════════════════════════════════════════════════════════════════════

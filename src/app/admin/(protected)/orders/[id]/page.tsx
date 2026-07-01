@@ -56,7 +56,7 @@ export default async function OrderDetailPage({ params }: { params: Promise<{ id
                 <div key={step} className="flex items-center flex-1 last:flex-none">
                   <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-medium shrink-0 ${
                     currentStep > i ? "bg-brand-700 text-white" :
-                    currentStep === i ? "bg-brand-200 text-brand-800 border-2 border-brand-700" :
+                    currentStep === i ? "bg-amber-100 text-amber-700 border-2 border-amber-300" :
                     "bg-brand-50 text-brand-300"
                   }`}>
                     {currentStep > i ? "✓" : i + 1}

@@ -165,7 +165,7 @@ export default function CheckoutPage() {
                         { value: "nairobi",    label: "Delivery within Nairobi",       fee: subtotal >= 7000 ? 0 : 450,  icon: "🚚" },
                         { value: "nationwide", label: "Nationwide courier delivery",   fee: subtotal >= 7000 ? 0 : 850,  icon: "📦" },
                       ] as const).map((opt) => (
-                        <label key={opt.value} className={`flex items-center justify-between gap-4 p-4 rounded-xl border cursor-pointer transition-colors ${deliveryMethod === opt.value ? "border-brand-500 bg-brand-50" : "border-brand-100 hover:border-brand-200"}`}>
+                        <label key={opt.value} className={`flex items-center justify-between gap-4 p-4 rounded-xl border cursor-pointer transition-colors ${deliveryMethod === opt.value ? "border-brand-500 bg-brand-50" : "border-brand-100 hover:border-brand-300"}`}>
                           <div className="flex items-center gap-3">
                             <input type="radio" name="delivery" value={opt.value}
                               checked={deliveryMethod === opt.value}
@@ -242,7 +242,7 @@ export default function CheckoutPage() {
                           value={customer.phone}
                           onChange={(e) => setCustomer({ ...customer, phone: e.target.value })}
                           placeholder="0712 345 678"
-                          className="w-full text-sm border border-brand-200 focus:border-brand-500 rounded-xl px-4 py-3 outline-none text-brand-800 bg-white"
+                          className="w-full text-sm border border-brand-100 focus:border-brand-500 rounded-xl px-4 py-3 outline-none text-brand-800 bg-white"
                         />
                         <p className="text-xs text-brand-400 mt-1">Must be a registered Safaricom M-Pesa number</p>
                       </div>

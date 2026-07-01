@@ -331,7 +331,7 @@ function QuoteFormInner() {
                       p.group === "bundle"  ? "bg-purple-50 text-purple-800 border-purple-200" :
                       p.group === "service" ? "bg-emerald-50 text-emerald-800 border-emerald-200" :
                       p.group === "custom"  ? "bg-amber-50 text-amber-800 border-amber-200" :
-                                              "bg-brand-50 text-brand-800 border-brand-200"
+                                              "bg-brand-50 text-brand-800 border-amber-200"
                     }`}>
                       {p.name}
                       <button type="button" onClick={() => removePick(p.id)}

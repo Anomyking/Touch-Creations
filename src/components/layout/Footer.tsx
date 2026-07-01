@@ -205,7 +205,7 @@ export default function Footer() {
           </div>
           <div className="flex gap-2 w-full sm:w-auto">
             <input type="email" placeholder="your@email.com"
-              className="flex-1 sm:w-64 text-sm bg-white border border-brand-200 rounded-full px-4 py-2.5 outline-none focus:border-brand-500 text-brand-900 placeholder:text-brand-400" />
+              className="flex-1 sm:w-64 text-sm bg-white border border-brand-100 rounded-full px-4 py-2.5 outline-none focus:border-brand-500 text-brand-900 placeholder:text-brand-400" />
             <motion.button whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}
               className="bg-brand-700 hover:bg-brand-600 text-white text-sm px-5 py-2.5 rounded-full transition-colors shrink-0">
               Subscribe

@@ -62,9 +62,6 @@ export default function AdminLogin() {
           </button>
         </form>
 
-        <p className="text-center text-xs text-brand-700 mt-4">
-          Set your password in .env.local as ADMIN_PASSWORD
-        </p>
       </div>
     </div>
   );

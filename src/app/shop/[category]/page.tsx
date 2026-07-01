@@ -38,9 +38,9 @@ export default async function CategoryPage({
       <div className="bg-brand-950 py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <nav className="flex items-center gap-2 text-xs text-white/70 mb-6">
-            <a href="/" className="hover:text-brand-400">Home</a>
+            <a href="/" className="text-white/70 hover:text-brand-400">Home</a>
             <span>›</span>
-            <a href="/#products" className="hover:text-brand-400">Products</a>
+            <a href="/#products" className="text-white/70 hover:text-brand-400">Products</a>
             <span>›</span>
             <span className="text-brand-400">{cat.name}</span>
           </nav>

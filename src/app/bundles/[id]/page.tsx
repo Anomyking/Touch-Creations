@@ -41,9 +41,9 @@ export default async function BundlePage({
       <div className="bg-brand-950 py-12">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
           <nav className="flex items-center gap-2 text-xs text-white/70 mb-6">
-            <Link href="/" className="hover:text-brand-400">Home</Link>
+            <Link href="/" className="text-white/70 hover:text-brand-400">Home</Link>
             <span>›</span>
-            <Link href="/#bundles" className="hover:text-brand-400">Bundles</Link>
+            <Link href="/#bundles" className="text-white/70 hover:text-brand-400">Bundles</Link>
             <span>›</span>
             <span className="text-brand-400">{bundle.name}</span>
           </nav>
@@ -126,17 +126,17 @@ export default async function BundlePage({
                 Save {formatPrice(savings)} · {discountPercent(bundle.originalPriceKES, bundle.priceKES)}% off
               </span>
 
-              <div className="space-y-3 mb-5 text-xs text-brand-500">
-                <p className="flex items-center gap-2">
+              <div className="space-y-3 mb-5 text-xs">
+                <p className="flex items-center gap-2 text-brand-500">
                   <span className="text-brand-400">✓</span> Free design support · 3 revisions
                 </p>
-                <p className="flex items-center gap-2">
+                <p className="flex items-center gap-2 text-brand-500">
                   <span className="text-brand-400">✓</span> Free delivery (Nairobi)
                 </p>
-                <p className="flex items-center gap-2">
+                <p className="flex items-center gap-2 text-brand-500">
                   <span className="text-brand-400">✓</span> Reprint guarantee
                 </p>
-                <p className="flex items-center gap-2">
+                <p className="flex items-center gap-2 text-brand-500">
                   <span className="text-brand-400">✓</span> Ready in 3–5 business days
                 </p>
               </div>
@@ -147,6 +147,7 @@ export default async function BundlePage({
               >
                 Order this pack →
               </Link>
+
               <a
                 href={`https://wa.me/254700000000?text=Hi, I'd like to order the ${bundle.name} (${formatPrice(bundle.priceKES)})`}
                 target="_blank" rel="noopener noreferrer"
@@ -161,4 +162,3 @@ export default async function BundlePage({
     </div>
   );
 }
-

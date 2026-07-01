@@ -60,7 +60,7 @@ export default function FAQSection() {
             <motion.div
               key={i}
               variants={itemVariants}
-              className={`bg-white border rounded-2xl overflow-hidden transition-colors ${open === i ? "border-brand-400" : "border-brand-100 hover:border-brand-200"}`}
+              className={`bg-white border rounded-2xl overflow-hidden transition-colors ${open === i ? "border-brand-400" : "border-brand-100 hover:border-brand-300"}`}
             >
               <button
                 className="w-full flex items-center justify-between gap-4 px-6 py-4 text-left"

@@ -78,7 +78,7 @@ export default function WebServicePage() {
       <div className="bg-brand-950 py-16">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <nav className="flex items-center gap-2 text-xs text-white/70 mb-6">
-            <Link href="/" className="hover:text-brand-400">Home</Link>
+            <Link href="/" className="text-white/70 hover:text-brand-400">Home</Link>
             <span>›</span>
             <span className="text-brand-400">Web design</span>
           </nav>

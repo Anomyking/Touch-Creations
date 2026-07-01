@@ -47,9 +47,9 @@ export default async function ShopIndexPage({
         <div className="bg-brand-950 py-12">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <nav className="flex items-center gap-2 text-xs text-white/70 mb-6">
-              <Link href="/" className="hover:text-brand-400">Home</Link>
+              <Link href="/" className="text-white/70 hover:text-brand-400">Home</Link>
               <span>›</span>
-              <Link href="/shop" className="hover:text-brand-400">All products</Link>
+              <Link href="/shop" className="text-white/70 hover:text-brand-400">All products</Link>
               <span>›</span>
               <span className="text-brand-400">Search</span>
             </nav>
@@ -59,7 +59,7 @@ export default async function ShopIndexPage({
                 : `No matches for "${query}"`}
             </h1>
             <p className="text-sm text-brand-600">
-              <Link href="/shop" className="hover:text-brand-300 underline underline-offset-2">← Clear search</Link>
+              <Link href="/shop" className="text-brand-600 hover:text-brand-300 underline underline-offset-2">← Clear search</Link>
             </p>
           </div>
         </div>
@@ -80,7 +80,7 @@ export default async function ShopIndexPage({
                 <Link href="/shop" className="inline-flex bg-brand-700 hover:bg-brand-600 text-white text-sm font-medium px-5 py-2.5 rounded-full">
                   Browse all products →
                 </Link>
-                <Link href="/quote" className="inline-flex border border-brand-200 hover:border-brand-400 text-brand-700 text-sm px-5 py-2.5 rounded-full">
+                <Link href="/quote" className="inline-flex border border-brand-100 hover:border-brand-400 text-brand-700 text-sm px-5 py-2.5 rounded-full">
                   Get a custom quote
                 </Link>
               </div>
@@ -97,7 +97,7 @@ export default async function ShopIndexPage({
       <div className="bg-brand-950 py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <nav className="flex items-center gap-2 text-xs text-white/70 mb-6">
-            <Link href="/" className="hover:text-brand-400">Home</Link>
+            <Link href="/" className="text-white/70 hover:text-brand-400">Home</Link>
             <span>›</span>
             <span className="text-brand-400">All products</span>
           </nav>
