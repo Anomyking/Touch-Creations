@@ -16,6 +16,7 @@ const productLinks = [
 ];
 
 const serviceLinks = [
+  { label: "Signage & branding",    href: "/services/signage" },
   { label: "Graphic design",        href: "/services/design"  },
   { label: "Same-day printing",     href: "/services/same-day"},
   { label: "Bulk & wholesale",      href: "/services/bulk"    },
@@ -25,6 +26,7 @@ const serviceLinks = [
 ];
 
 const helpLinks = [
+  { label: "About us",           href: "/about"        },
   { label: "How to order",       href: "/how-to-order" },
   { label: "Design templates",   href: "/templates"    },
   { label: "Turnaround times",   href: "/turnaround"   },

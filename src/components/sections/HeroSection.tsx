@@ -185,6 +185,12 @@ export default function HeroSection() {
       };
     }),
     {
+      id: "signage", name: "Signage & branding", href: "/services/signage",
+      description: "3D LED, vehicle wraps, neon & pylon signage",
+      emoji: "🪧", bgClass: "bg-brand-800", badge: "Service",
+      featured: { label: "Since 2010" },
+    },
+    {
       id: "graphic-design", name: "Graphic design", href: "/services/design",
       description: "Logos, brand identity & social media",
       emoji: "🎨", bgClass: "bg-brand-700", badge: "Service",

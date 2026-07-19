@@ -9,11 +9,12 @@ import { useAuth } from "@/context/AuthContext";
 import { motion, AnimatePresence } from "framer-motion";
 
 const navLinks = [
-  { label: "Products", href: "/#products" },
-  { label: "Bundles",  href: "/#bundles"  },
-  { label: "Business", href: "/business"  },
-  { label: "Contact",  href: "/contact"   },
-  { label: "Support",  href: "/faqs"      },
+  { label: "Products", href: "/#products"        },
+  { label: "Signage",  href: "/services/signage"  },
+  { label: "About",    href: "/about"             },
+  { label: "Business", href: "/business"          },
+  { label: "Contact",  href: "/contact"           },
+  { label: "Support",  href: "/faqs"              },
 ];
 
 /* Gold underline that slides left → right on hover */
