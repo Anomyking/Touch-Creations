@@ -6,6 +6,7 @@ import { products, bundles, categories } from "@/data";
 
 // Featured items shown at the top of the picker
 const services = [
+  { id: "svc-signage", name: "Signage & branding", group: "service", note: "3D LED, vehicle wraps, neon, pylon signage" },
   { id: "svc-graphic", name: "Graphic design",  group: "service", note: "Logos, brand identity, social media" },
   { id: "svc-web",     name: "Web design",       group: "service", note: "Websites, e-commerce, M-Pesa setup" },
 ];
@@ -32,6 +33,7 @@ function QuoteFormInner() {
     }
     if (preService === "design") initial.push({ id: "svc-graphic", name: "Graphic design", group: "service" });
     if (preService === "web")    initial.push({ id: "svc-web",     name: "Web design",     group: "service" });
+    if (preService === "signage") initial.push({ id: "svc-signage", name: "Signage & branding", group: "service" });
     return initial;
   });
   const [customItem,  setCustomItem]  = useState("");
