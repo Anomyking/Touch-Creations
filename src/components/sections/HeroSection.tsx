@@ -185,12 +185,6 @@ export default function HeroSection() {
       };
     }),
     {
-      id: "signage", name: "Signage & branding", href: "/services/signage",
-      description: "3D LED, vehicle wraps, neon & pylon signage",
-      emoji: "🪧", bgClass: "bg-brand-800", badge: "Service",
-      featured: { label: "Since 2010" },
-    },
-    {
       id: "graphic-design", name: "Graphic design", href: "/services/design",
       description: "Logos, brand identity & social media",
       emoji: "🎨", bgClass: "bg-brand-700", badge: "Service",
@@ -209,7 +203,7 @@ export default function HeroSection() {
 
         {/* Bento grid — equal height via grid-rows, re-animates on scroll up too */}
         <motion.div
-          className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-4 auto-rows-fr"
+          className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-2 auto-rows-fr"
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
@@ -218,6 +212,39 @@ export default function HeroSection() {
           {bentoItems.map((item, i) => (
             <BentoCard key={item.id} item={item} index={i} />
           ))}
+        </motion.div>
+
+        {/* Signage banner — full-width flagship row, kept out of the tile grid on purpose */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false, margin: "-60px" }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
+          className="mb-4"
+        >
+          <Link
+            href="/services/signage"
+            className="group flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 rounded-2xl border border-brand-800 bg-brand-800 hover:bg-brand-700 transition-colors p-5 sm:p-6"
+          >
+            <div className="flex items-center gap-4">
+              <div className="w-11 h-11 rounded-xl bg-black/20 flex items-center justify-center text-xl shrink-0">
+                🪧
+              </div>
+              <div>
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="inline-flex items-center gap-1.5 bg-brand-600 text-brand-950 text-[10px] font-medium rounded-full px-2.5 py-1">
+                    Since 2010
+                  </span>
+                  <span className="text-[11px] text-brand-500">Nairobi&apos;s signage manufacturer</span>
+                </div>
+                <p className="text-base font-medium text-brand-300">Signage &amp; branding — we make heads turn</p>
+                <p className="text-xs text-brand-500 mt-0.5">3D LED signage, vehicle wraps, neon & pylon signage, fabricated and installed in-house</p>
+              </div>
+            </div>
+            <span className="text-sm text-brand-400 group-hover:text-white transition-colors shrink-0 self-start sm:self-center">
+              Explore signage →
+            </span>
+          </Link>
         </motion.div>
 
         {/* Work ticker */}
