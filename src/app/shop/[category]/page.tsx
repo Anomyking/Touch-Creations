@@ -1,7 +1,9 @@
 import { notFound }                                from "next/navigation";
 import { categories, getCategoryBySlug, getProductsByCategory } from "@/data";
+import { heroImages }                              from "@/data/heroImages";
 import type { Metadata }                           from "next";
 import ProductCard                                 from "@/components/product/ProductCard";
+import BannerSlideshow                             from "@/components/ui/BannerSlideshow";
 
 export async function generateStaticParams() {
   return categories.map((c) => ({ category: c.slug }));
@@ -35,8 +37,9 @@ export default async function CategoryPage({
   return (
     <div className="bg-white min-h-screen">
       {/* Header */}
-      <div className="bg-brand-950 py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative bg-brand-950 py-12">
+        <BannerSlideshow images={heroImages[cat.id] ?? []} />
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <nav className="flex items-center gap-2 text-xs text-white/70 mb-6">
             <a href="/" className="text-white/70 hover:text-brand-400">Home</a>
             <span>›</span>

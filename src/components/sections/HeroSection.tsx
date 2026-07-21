@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { categories } from "@/data";
+import { heroImages } from "@/data/heroImages";
 import WorkTicker from "./WorkTicker";
 import QuoteBento from "./QuoteBento";
 import { motion, useInView, useMotionValue, useSpring, animate } from "framer-motion";
@@ -59,6 +60,7 @@ function RevealText({ text, className = "" }: { text: string; className?: string
 type BentoItem = {
   id: string; name: string; href: string; description: string;
   emoji: string; bgClass: string; badge: string;
+  images: string[]; big?: boolean;
   featured?: { label: string; pulse?: boolean };
 };
 
@@ -100,60 +102,71 @@ const fadeUp = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] } },
 };
 
-/* ── Bento Card — 360° spin on mouse leave ───────────────────────────── */
+/* ── Bento Card — photo slideshow at rest, clean brand card on hover ── */
 function BentoCard({ item, index }: { item: BentoItem; index: number }) {
-  const [spinning, setSpinning] = useState(false);
+  const [imgIndex, setImgIndex] = useState(0);
 
-  const handleLeave = () => {
-    if (spinning) return;
-    setSpinning(true);
-    // after spin completes, reset flag
-    setTimeout(() => setSpinning(false), 700);
-  };
+  // Stagger each tile's slideshow start so they don't all flip in unison —
+  // creates a rolling "wave" across the grid instead of a single flash.
+  useEffect(() => {
+    if (item.images.length < 2) return;
+    const staggerDelay = index * 300;
+    let intervalId: ReturnType<typeof setInterval> | undefined;
+    const startTimeout = setTimeout(() => {
+      intervalId = setInterval(() => {
+        setImgIndex((prev) => (prev + 1) % item.images.length);
+      }, 3400);
+    }, staggerDelay);
+    return () => {
+      clearTimeout(startTimeout);
+      if (intervalId) clearInterval(intervalId);
+    };
+  }, [index, item.images.length]);
 
   return (
-    <motion.div variants={cardVariants} className="h-full">
-      <motion.div
-        onHoverEnd={handleLeave}
-        animate={
-          spinning
-            ? {
-                rotateY: [0, 180, 360],
-                transition: {
-                  duration: 0.7,
-                  ease: [0.55, 0, 0.45, 1], // fast start, smooth end
-                  times: [0, 0.35, 1],       // quick to 180, ease to 360
-                },
-              }
-            : { rotateY: 0 }
-        }
-        style={{ transformPerspective: 1000, transformStyle: "preserve-3d" }}
-        className="h-full"
+    <motion.div variants={cardVariants} className={`h-full ${item.big ? "col-span-2 row-span-2" : ""}`}>
+      <Link
+        href={item.href}
+        className="relative group flex flex-col justify-between rounded-2xl border border-brand-800 overflow-hidden hover:border-brand-500 transition-colors duration-300 h-full"
       >
-        <Link
-          href={item.href}
-          className={`relative group flex flex-col justify-between rounded-2xl border border-brand-800 ${item.bgClass} p-4 overflow-hidden hover:border-brand-500 transition-colors duration-300 h-full min-h-[160px]`}
+        {/* Photo layer — default state */}
+        <div className="absolute inset-0">
+          {item.images.map((src, i) => (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              key={src}
+              src={src}
+              alt=""
+              className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-out group-hover:opacity-0 ${
+                i === imgIndex ? "opacity-100" : "opacity-0"
+              }`}
+            />
+          ))}
+          {/* Bottom caption so mobile users (no hover) still know what this tile is */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent transition-opacity duration-300 group-hover:opacity-0" />
+          <div className="absolute bottom-0 left-0 right-0 p-3 transition-opacity duration-300 group-hover:opacity-0">
+            <p className="text-xs font-medium text-white drop-shadow-sm">{item.name}</p>
+          </div>
+        </div>
+
+        {/* Clean brand card — revealed on hover */}
+        <div
+          className={`absolute inset-0 ${item.bgClass} p-4 flex flex-col justify-between opacity-0 group-hover:opacity-100 transition-opacity duration-300`}
         >
           {/* Watermark number */}
           <div className="absolute top-2 right-3 text-6xl font-bold text-white/[0.04] select-none leading-none pointer-events-none">
             {String(index + 1).padStart(2, "0")}
           </div>
 
-          {/* Top row */}
           <div className="flex items-start justify-between relative z-10">
-            <motion.div
-              className="w-9 h-9 rounded-xl bg-black/20 flex items-center justify-center text-lg shrink-0"
-              whileHover={{ rotate: -10, scale: 1.15 }}
-              transition={{ type: "spring", stiffness: 400, damping: 14 }}
-            >
+            <div className={`rounded-xl bg-black/20 flex items-center justify-center shrink-0 ${item.big ? "w-12 h-12 text-2xl" : "w-9 h-9 text-lg"}`}>
               {item.emoji}
-            </motion.div>
+            </div>
             <span className="text-[10px] font-medium bg-black/20 text-brand-400 rounded-full px-2.5 py-1">
               {item.badge}
             </span>
           </div>
 
-          {/* Bottom content */}
           <div className="relative z-10 mt-auto">
             {item.featured && (
               <span className="inline-flex items-center gap-1.5 bg-brand-600 text-brand-950 text-[10px] font-medium rounded-full px-2.5 py-1 mb-2">
@@ -161,39 +174,50 @@ function BentoCard({ item, index }: { item: BentoItem; index: number }) {
                 {item.featured.label}
               </span>
             )}
-            <p className="text-sm font-medium text-brand-300">{item.name}</p>
-            <p className="text-[11px] text-brand-500 mt-1 leading-relaxed">{item.description}</p>
+            <p className={`font-medium text-brand-300 ${item.big ? "text-lg" : "text-sm"}`}>{item.name}</p>
+            <p className={`text-brand-500 mt-1 leading-relaxed ${item.big ? "text-xs max-w-xs" : "text-[11px]"}`}>{item.description}</p>
             <p className="text-[11px] text-brand-600 mt-2 group-hover:text-brand-400 transition-colors">
               {item.badge === "Service" ? "Learn more" : "Shop now"} →
             </p>
           </div>
-        </Link>
-      </motion.div>
+        </div>
+      </Link>
     </motion.div>
   );
 }
 
 export default function HeroSection() {
   const bentoItems: BentoItem[] = [
+    {
+      id: "web-design", name: "Web design", href: "/services/web",
+      description: "Fast Kenyan sites with M-Pesa built in",
+      emoji: "💻", bgClass: "bg-brand-900", badge: "Service",
+      images: heroImages["web-design"] ?? [],
+      featured: { label: "New", pulse: true },
+      big: true,
+    },
     ...categories.map<BentoItem>((cat, i) => {
       const v = categoryVisuals[cat.id] ?? { emoji: "🖨️", bgClass: "bg-brand-900" };
       return {
         id: cat.id, name: cat.name, href: `/shop/${cat.slug}`,
         description: cat.description, emoji: v.emoji, bgClass: v.bgClass,
         badge: `${cat.productCount} products`,
+        images: heroImages[cat.id] ?? [],
         featured: i === 0 ? { label: "Most ordered" } : undefined,
       };
     }),
     {
+      id: "signage", name: "Signage & branding", href: "/services/signage",
+      description: "3D LED, vehicle wraps, neon & pylon signage",
+      emoji: "🪧", bgClass: "bg-brand-800", badge: "Service",
+      images: heroImages["signage"] ?? [],
+      featured: { label: "Since 2010" },
+    },
+    {
       id: "graphic-design", name: "Graphic design", href: "/services/design",
       description: "Logos, brand identity & social media",
       emoji: "🎨", bgClass: "bg-brand-700", badge: "Service",
-    },
-    {
-      id: "web-design", name: "Web design", href: "/services/web",
-      description: "Fast Kenyan sites with M-Pesa built in",
-      emoji: "💻", bgClass: "bg-brand-900", badge: "Service",
-      featured: { label: "New", pulse: true },
+      images: heroImages["graphic-design"] ?? [],
     },
   ];
 
@@ -201,9 +225,15 @@ export default function HeroSection() {
     <section className="bg-brand-600">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-0">
 
-        {/* Bento grid — equal height via grid-rows, re-animates on scroll up too */}
+        {/*
+          Bento grid — one big 2×2 tile (Web design) + eight equal 1×1 tiles.
+          grid-flow-row-dense lets the browser auto-pack the small tiles into
+          every gap left by the big one, so both breakpoints tile exactly:
+          mobile 2 cols → 4(big) + 8(small) = 12 cells = 6 rows.
+          desktop 4 cols → 4(big) + 8(small) = 12 cells = 3 rows.
+        */}
         <motion.div
-          className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-2 auto-rows-fr"
+          className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-4 auto-rows-[130px] grid-flow-row-dense"
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
@@ -212,39 +242,6 @@ export default function HeroSection() {
           {bentoItems.map((item, i) => (
             <BentoCard key={item.id} item={item} index={i} />
           ))}
-        </motion.div>
-
-        {/* Signage banner — full-width flagship row, kept out of the tile grid on purpose */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false, margin: "-60px" }}
-          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
-          className="mb-4"
-        >
-          <Link
-            href="/services/signage"
-            className="group flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 rounded-2xl border border-brand-800 bg-brand-800 hover:bg-brand-700 transition-colors p-5 sm:p-6"
-          >
-            <div className="flex items-center gap-4">
-              <div className="w-11 h-11 rounded-xl bg-black/20 flex items-center justify-center text-xl shrink-0">
-                🪧
-              </div>
-              <div>
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="inline-flex items-center gap-1.5 bg-brand-600 text-brand-950 text-[10px] font-medium rounded-full px-2.5 py-1">
-                    Since 2010
-                  </span>
-                  <span className="text-[11px] text-brand-500">Nairobi&apos;s signage manufacturer</span>
-                </div>
-                <p className="text-base font-medium text-brand-300">Signage &amp; branding — we make heads turn</p>
-                <p className="text-xs text-brand-500 mt-0.5">3D LED signage, vehicle wraps, neon & pylon signage, fabricated and installed in-house</p>
-              </div>
-            </div>
-            <span className="text-sm text-brand-400 group-hover:text-white transition-colors shrink-0 self-start sm:self-center">
-              Explore signage →
-            </span>
-          </Link>
         </motion.div>
 
         {/* Work ticker */}
