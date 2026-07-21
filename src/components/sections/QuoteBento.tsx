@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { CreditCard, Truck, Megaphone, Check, PenLine, ArrowRight, X, Eye, Pencil, Trash2 } from "lucide-react";
 
 interface Draft {
   id:        string;
@@ -10,6 +11,14 @@ interface Draft {
   createdAt: number;
   status:    "draft" | "sent";
 }
+
+// Quick-start chips — tapping one pre-fills the editor with a starter
+// sentence so people with only a vague idea don't face a blank box.
+const QUICK_STARTS = [
+  { icon: CreditCard, label: "Business cards",   prompt: "I need 500 business cards, matte finish, double-sided, full colour — " },
+  { icon: Truck,      label: "Vehicle branding", prompt: "I need a vehicle wrap for our delivery van — full wrap with logo and contact details, urgent — " },
+  { icon: Megaphone,  label: "Event banner",     prompt: "I need a 3x2m vinyl banner for our event next week — full colour with eyelets — " },
+];
 
 // Keywords to highlight as the user types — print-shop relevant
 const KEYWORDS = {
@@ -110,6 +119,21 @@ export default function QuoteBento() {
     setTimeout(() => textareaRef.current?.focus(), 50);
   };
 
+  // Quick-start chip — pre-fill with a starter sentence, expand, and put
+  // the cursor at the end so the person can just keep typing.
+  const startQuick = (prompt: string) => {
+    setEditingId(null);
+    setText(prompt);
+    setExpanded(true);
+    setTimeout(() => {
+      const el = textareaRef.current;
+      if (el) {
+        el.focus();
+        el.setSelectionRange(prompt.length, prompt.length);
+      }
+    }, 50);
+  };
+
   // Save (create or update)
   const handleSubmit = () => {
     const trimmed = text.trim();
@@ -153,65 +177,109 @@ export default function QuoteBento() {
   return (
     <>
       <div className="mb-4">
-        {/* The bento card itself */}
-        <div className="bg-gradient-to-br from-brand-900/40 to-brand-950/30 border border-brand-700 rounded-2xl overflow-hidden shadow-lg">
-          <div className="grid grid-cols-1 lg:grid-cols-5 gap-0">
+        {/* The bento card itself — glass panel: translucent dark base,
+            backdrop blur, soft top sheen and glow for a premium, tactile feel */}
+        <div
+          className="relative rounded-3xl overflow-hidden border border-white/15 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.5)] backdrop-blur-2xl"
+          style={{ background: "linear-gradient(160deg, rgba(34,30,31,0.78), rgba(34,30,31,0.6))" }}
+        >
+          {/* Glossy highlight — top sheen + soft corner glow, like light hitting glass */}
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/12 via-transparent to-transparent" />
+          <div className="pointer-events-none absolute -top-24 -left-16 w-64 h-64 rounded-full bg-white/10 blur-3xl" />
+          <div className="pointer-events-none absolute -bottom-24 -right-10 w-56 h-56 rounded-full bg-amber-400/10 blur-3xl" />
+
+          <div className="relative grid grid-cols-1 lg:grid-cols-5 gap-0">
 
             {/* Left: explainer */}
-            <div className="lg:col-span-2 p-6 lg:p-8 border-b lg:border-b-0 lg:border-r border-brand-700 flex flex-col justify-center">
-              <span className="inline-flex items-center gap-2 bg-white/8 text-white text-[11px] font-semibold rounded-full px-3 py-1 mb-4 ring-1 ring-white/6">
+            <div className="lg:col-span-2 p-6 lg:p-8 border-b lg:border-b-0 lg:border-r border-white/10 flex flex-col justify-center">
+              <span className="inline-flex items-center gap-2 bg-white/10 text-white text-[11px] font-semibold rounded-full px-3 py-1 mb-4 ring-1 ring-white/15 backdrop-blur-sm w-fit">
                 <span className="w-2 h-2 rounded-full bg-amber-400 inline-block" />
                 Custom orders
               </span>
               <h3 className="text-2xl font-semibold text-white mb-3 leading-snug">
                 Need something special?
               </h3>
-              <p className="text-sm text-white/75 leading-relaxed mb-4 max-w-md">
+              <p className="text-sm text-white/70 leading-relaxed mb-4 max-w-md">
                 Describe your idea — quantity, finish, deadline, anything. We&apos;ll send a clear
                 quote fast. Save drafts and come back anytime.
               </p>
-              <div className="space-y-2 text-sm text-white/70">
+              <div className="space-y-2 text-sm text-white/75">
                 <p className="flex items-center gap-3">
-                  <span className="w-2 h-2 rounded-full bg-amber-400" />
+                  <Check size={15} className="text-amber-400 shrink-0" />
                   Type freely — we highlight key details
                 </p>
                 <p className="flex items-center gap-3">
-                  <span className="w-2 h-2 rounded-full bg-amber-400" />
+                  <Check size={15} className="text-amber-400 shrink-0" />
                   Edit or delete any draft anytime
                 </p>
                 <p className="flex items-center gap-3">
-                  <span className="w-2 h-2 rounded-full bg-amber-400" />
+                  <Check size={15} className="text-amber-400 shrink-0" />
                   Drafts saved on your device
                 </p>
               </div>
             </div>
 
-            {/* Right: editor + drafts */}
+            {/* Right: quick-start + live preview + editor */}
             <div className="lg:col-span-3 p-6 lg:p-8">
 
               {!expanded ? (
-                /* Trigger field */
-                <button
-                  onClick={() => openEditor()}
-                  className="w-full text-left bg-white/5 hover:bg-white/10 border border-transparent hover:border-white/6 rounded-2xl px-5 py-4 transition-all group"
-                >
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-white/85 group-hover:text-white">
-                      ✍️  Describe your custom order — quick & easy
-                    </span>
-                    <span className="text-xs text-white/60 group-hover:text-white">Start →</span>
+                <div className="flex flex-col gap-3.5">
+                  {/* Quick-start chips */}
+                  <div>
+                    <p className="text-[10px] font-medium tracking-widest uppercase text-white/45 mb-2">
+                      Quick start
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      {QUICK_STARTS.map(({ icon: Icon, label, prompt }) => (
+                        <button
+                          key={label}
+                          onClick={() => startQuick(prompt)}
+                          className="flex items-center gap-1.5 bg-white/8 hover:bg-white/15 active:scale-95 border border-white/12 hover:border-white/25 rounded-full px-3 py-1.5 text-xs text-white/85 hover:text-white backdrop-blur-sm transition-all"
+                        >
+                          <Icon size={14} />
+                          {label}
+                        </button>
+                      ))}
+                    </div>
                   </div>
-                </button>
+
+                  {/* Live highlight preview — shows the highlighting feature before anyone types */}
+                  <div className="bg-black/20 border border-white/10 rounded-xl p-3 backdrop-blur-sm">
+                    <p className="text-[9px] font-medium tracking-widest uppercase text-white/40 mb-1.5">
+                      See it highlight as you type
+                    </p>
+                    <p className="text-xs leading-relaxed text-white/80">
+                      <mark className="bg-red-500/25 text-red-200 rounded px-0.5">Urgent</mark> —{" "}
+                      <mark className="bg-amber-500/25 text-amber-200 rounded px-0.5">500 pcs</mark>{" "}
+                      <mark className="bg-purple-500/25 text-purple-200 rounded px-0.5">business cards</mark>,{" "}
+                      <mark className="bg-emerald-500/20 text-emerald-200 rounded px-0.5">matte</mark>, deliver Friday
+                    </p>
+                  </div>
+
+                  {/* Input trigger — styled to unmistakably read as a text field */}
+                  <button
+                    onClick={() => openEditor()}
+                    className="w-full text-left flex items-center justify-between bg-white/8 hover:bg-white/14 border border-white/15 hover:border-amber-400/40 rounded-2xl px-5 py-4 backdrop-blur-sm transition-all group"
+                  >
+                    <span className="flex items-center gap-2.5 text-sm text-white/70 group-hover:text-white/90">
+                      <PenLine size={16} className="shrink-0" />
+                      Describe your custom order — quick &amp; easy
+                    </span>
+                    <span className="flex items-center gap-1 text-xs text-amber-300 group-hover:text-amber-200 shrink-0">
+                      Start <ArrowRight size={14} />
+                    </span>
+                  </button>
+                </div>
               ) : (
                 /* Expanded glossy editor */
-                <div className="bg-gradient-to-br from-black/30 to-black/10 border border-brand-700 rounded-xl shadow-md overflow-hidden">
+                <div className="bg-black/25 backdrop-blur-md border border-white/15 rounded-xl shadow-lg overflow-hidden">
                   {/* Top label */}
-                  <div className="flex items-center justify-between px-4 py-2.5 border-b border-brand-800 bg-brand-950/50">
-                    <p className="text-[10px] font-medium tracking-widest uppercase text-white">
-                      {editingId ? "✏️ Editing draft" : "✨ New custom order"}
+                  <div className="flex items-center justify-between px-4 py-2.5 border-b border-white/10 bg-white/5">
+                    <p className="text-[10px] font-medium tracking-widest uppercase text-white/85">
+                      {editingId ? "Editing draft" : "New custom order"}
                     </p>
-                    <button onClick={handleCancel} className="text-xs text-white hover:text-white">
-                      ✕
+                    <button onClick={handleCancel} className="text-white/60 hover:text-white transition-colors">
+                      <X size={14} />
                     </button>
                   </div>
 
@@ -237,29 +305,29 @@ export default function QuoteBento() {
                   </div>
 
                   {/* Footer with legend + actions */}
-                  <div className="flex items-center justify-between px-4 py-3 border-t border-brand-800 bg-brand-950/50">
-                    <div className="flex items-center gap-3 text-[10px] text-white">
-                      <span className="flex items-center gap-1 text-white">
+                  <div className="flex items-center justify-between px-4 py-3 border-t border-white/10 bg-white/5">
+                    <div className="flex items-center gap-3 text-[10px] text-white/75">
+                      <span className="flex items-center gap-1">
                         <span className="w-2 h-2 rounded bg-red-500/30 border border-red-500/50" /> Urgent
                       </span>
-                      <span className="flex items-center gap-1 text-white">
-                        <span className="w-2 h-2 rounded bg-brand-600/40 border border-brand-500/50" /> Product
+                      <span className="flex items-center gap-1">
+                        <span className="w-2 h-2 rounded bg-purple-500/30 border border-purple-500/50" /> Product
                       </span>
-                      <span className="flex items-center gap-1 text-white">
+                      <span className="flex items-center gap-1">
                         <span className="w-2 h-2 rounded bg-emerald-500/30 border border-emerald-500/50" /> Finish
                       </span>
-                      <span className="flex items-center gap-1 text-white">
+                      <span className="flex items-center gap-1">
                         <span className="w-2 h-2 rounded bg-amber-500/30 border border-amber-500/50" /> Quantity
                       </span>
                     </div>
                     <div className="flex gap-2">
                       <button onClick={handleCancel}
-                        className="text-xs text-white hover:text-white/90 px-3 py-1.5 transition-colors">
+                        className="text-xs text-white/70 hover:text-white px-3 py-1.5 transition-colors">
                         Cancel
                       </button>
                       <button onClick={handleSubmit} disabled={!text.trim()}
-                        className="text-xs bg-brand-700 hover:bg-brand-600 disabled:opacity-40 disabled:cursor-not-allowed text-white font-medium px-4 py-1.5 rounded-full transition-colors">
-                        {editingId ? "Save changes" : "Add to drafts →"}
+                        className="flex items-center gap-1.5 text-xs bg-brand-700 hover:bg-brand-600 disabled:opacity-40 disabled:cursor-not-allowed text-white font-medium px-4 py-1.5 rounded-full transition-colors">
+                        {editingId ? "Save changes" : "Add to drafts"} <ArrowRight size={12} />
                       </button>
                     </div>
                   </div>
@@ -270,47 +338,47 @@ export default function QuoteBento() {
               {drafts.length > 0 && (
                 <div className="mt-4 space-y-1">
                   <div className="flex items-center justify-between mb-2 px-1">
-                    <p className="text-[10px] font-medium tracking-widest uppercase text-brand-500">
+                    <p className="text-[10px] font-medium tracking-widest uppercase text-white/45">
                       Your drafts ({drafts.length})
                     </p>
-                    <Link href="/quote" className="text-[10px] text-brand-500 hover:text-brand-300">
+                    <Link href="/quote" className="text-[10px] text-amber-300 hover:text-amber-200">
                       Send all to Touch creations →
                     </Link>
                   </div>
                   {drafts.map((draft) => (
-                    <div key={draft.id} className="group flex items-center gap-3 bg-brand-950/40 hover:bg-brand-950/70 border border-brand-800 hover:border-brand-700 rounded-xl px-4 py-2.5 transition-all">
+                    <div key={draft.id} className="group flex items-center gap-3 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 rounded-xl px-4 py-2.5 backdrop-blur-sm transition-all">
                       <div className="flex-1 min-w-0">
                         <p className="text-xs font-medium text-white truncate">{draft.title}</p>
-                        <p className="text-[10px] text-white/70 mt-0.5">{timeAgo(draft.createdAt)}</p>
+                        <p className="text-[10px] text-white/55 mt-0.5">{timeAgo(draft.createdAt)}</p>
                       </div>
                       {confirmDelete === draft.id ? (
                         <div className="flex items-center gap-2">
-                          <span className="text-[10px] text-red-400">Delete?</span>
+                          <span className="text-[10px] text-red-300">Delete?</span>
                           <button onClick={() => handleDelete(draft.id)}
                             className="w-6 h-6 rounded-full bg-red-500 hover:bg-red-600 text-white text-xs flex items-center justify-center transition-colors">
-                            ✓
+                            <Check size={12} />
                           </button>
                           <button onClick={() => setConfirmDelete(null)}
-                            className="w-6 h-6 rounded-full bg-brand-800 hover:bg-brand-700 text-white text-xs flex items-center justify-center transition-colors">
-                            ✕
+                            className="w-6 h-6 rounded-full bg-white/15 hover:bg-white/25 text-white text-xs flex items-center justify-center transition-colors">
+                            <X size={12} />
                           </button>
                         </div>
                       ) : (
                         <div className="flex items-center gap-1">
                           <button onClick={() => setViewing(draft)}
                             title="View"
-                            className="w-7 h-7 rounded-lg hover:bg-brand-800 text-white/80 hover:text-white text-xs flex items-center justify-center transition-colors">
-                            👁
+                            className="w-7 h-7 rounded-lg hover:bg-white/15 text-white/70 hover:text-white flex items-center justify-center transition-colors">
+                            <Eye size={14} />
                           </button>
                           <button onClick={() => openEditor(draft)}
                             title="Edit"
-                            className="w-7 h-7 rounded-lg hover:bg-brand-800 text-white/80 hover:text-white text-xs flex items-center justify-center transition-colors">
-                            ✏️
+                            className="w-7 h-7 rounded-lg hover:bg-white/15 text-white/70 hover:text-white flex items-center justify-center transition-colors">
+                            <Pencil size={14} />
                           </button>
                           <button onClick={() => setConfirmDelete(draft.id)}
                             title="Delete"
-                            className="w-7 h-7 rounded-lg hover:bg-red-900/40 text-white/80 hover:text-red-400 text-xs flex items-center justify-center transition-colors">
-                            🗑
+                            className="w-7 h-7 rounded-lg hover:bg-red-500/20 text-white/70 hover:text-red-300 flex items-center justify-center transition-colors">
+                            <Trash2 size={14} />
                           </button>
                         </div>
                       )}
@@ -360,28 +428,32 @@ export default function QuoteBento() {
 
       {/* View modal */}
       {viewing && (
-        <div className="modal-view fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 cursor-pointer" onClick={() => setViewing(null)}>
+        <div className="modal-view fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 cursor-pointer" onClick={() => setViewing(null)}>
           <div onClick={(e) => e.stopPropagation()}
-            className="bg-gradient-to-br from-brand-900 to-brand-950 border border-brand-700 rounded-2xl max-w-lg w-full p-6 shadow-2xl">
-            <div className="flex items-start justify-between mb-4 pb-4 border-b border-brand-800">
+            className="border border-white/15 rounded-2xl max-w-lg w-full p-6 shadow-2xl backdrop-blur-xl"
+            style={{ background: "rgba(34,30,31,0.88)" }}
+          >
+            <div className="flex items-start justify-between mb-4 pb-4 border-b border-white/10">
               <div>
-                <p className="text-[10px] font-medium tracking-widest uppercase text-brand-500">Custom order draft</p>
-                <p className="text-sm font-medium text-brand-300 mt-1">{viewing.title}</p>
-                <p className="text-xs text-brand-600 mt-0.5">Saved {timeAgo(viewing.createdAt)}</p>
+                <p className="text-[10px] font-medium tracking-widest uppercase text-white/45">Custom order draft</p>
+                <p className="text-sm font-medium text-white mt-1">{viewing.title}</p>
+                <p className="text-xs text-white/50 mt-0.5">Saved {timeAgo(viewing.createdAt)}</p>
               </div>
-              <button onClick={() => setViewing(null)} className="text-brand-500 hover:text-brand-300 text-lg">✕</button>
+              <button onClick={() => setViewing(null)} className="text-white/60 hover:text-white transition-colors">
+                <X size={16} />
+              </button>
             </div>
             <div
-              className="text-sm text-brand-300 whitespace-pre-wrap leading-relaxed mb-5 max-h-96 overflow-y-auto"
+              className="text-sm text-white/85 whitespace-pre-wrap leading-relaxed mb-5 max-h-96 overflow-y-auto"
               dangerouslySetInnerHTML={{ __html: highlightContent(viewing.content) }}
             />
-            <div className="flex gap-2 pt-4 border-t border-brand-800">
+            <div className="flex gap-2 pt-4 border-t border-white/10">
               <button onClick={() => { openEditor(viewing); setViewing(null); }}
-                className="flex-1 text-xs bg-brand-700 hover:bg-brand-600 text-white py-2.5 rounded-full transition-colors">
-                ✏️ Edit
+                className="flex-1 flex items-center justify-center gap-1.5 text-xs bg-brand-700 hover:bg-brand-600 text-white py-2.5 rounded-full transition-colors">
+                <Pencil size={13} /> Edit
               </button>
               <Link href="/quote"
-                className="flex-1 text-xs text-center border border-brand-700 text-brand-400 hover:text-brand-300 hover:border-brand-500 py-2.5 rounded-full transition-colors">
+                className="flex-1 text-xs text-center border border-white/15 text-amber-300 hover:text-amber-200 hover:border-amber-300/40 py-2.5 rounded-full transition-colors">
                 Send to Touch creations →
               </Link>
             </div>

@@ -154,7 +154,7 @@ export default function AboutPage() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {approach.map((a) => (
               <div key={a.title} className="bg-brand-900/50 border border-brand-800 rounded-2xl p-5">
-                <p className="text-sm font-medium text-brand-300 mb-3">{a.title}</p>
+                <p className="text-sm font-medium text-white mb-3">{a.title}</p>
                 <ul className="space-y-1.5">
                   {a.items.map((it) => (
                     <li key={it} className="text-xs text-brand-500 flex items-start gap-2">
